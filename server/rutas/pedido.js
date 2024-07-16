@@ -12,4 +12,7 @@ module.exports = (app) => {
     .get(pedCtrl.rPedido)
     .put(pedCtrl.uPedido)
     .delete(pedCtrl.dPedido);
+
+    app.route('/api/setLibro')
+    .post(pedCtrl.nPedido);
 }
