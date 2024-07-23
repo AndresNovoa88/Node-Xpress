@@ -1,3 +1,4 @@
+//configuracion aplicable para SERVIDOR
 
 const fs = require('fs');
 const express = require("express");
@@ -7,20 +8,32 @@ const path = require("path");
 const bp = require("body-parser");
 const cors = require('cors');
 
+const rl = require('./server/controlador/pedido'); // Ruta al controlador correcto
+const dCtrl = require('./server/controlador/pedido'); // Ruta al controlador correcto
+
+const app = express();
 const hostname = 'localhost';
 const port = 2000;
 
-const app = express();
 app.use(morgan('dev'));
 app.use(bp.json());
 app.use(cors());
-
 //configuramos el directorio donde express debe tomar los archivos
 app.use(express.static(path.join(__dirname, 'public')));
 
+//definimos las rutas
+app.get('/api/pedidos', rl.getAllPedidos);
+app.post('/api/pedidos', rl.nPedido);
+app.get('/api/pedidos/:pedId', rl.rPedido);
+app.put('/api/pedidos/:pedId', rl.uPedido);
+app.delete('/api/pedidos/:pedId', dCtrl.dPedido);
+app.post('/api/setLibro', rl.setLibro);
+
+//configurar rutas adicionales desde archivos externos
 require('./server/rutas/pedido')(app);
 
-app.use((req, res, next)=>{
+//Middleware de respuesta para rutas no definidas
+app.use((req, res, next) => {
     console.log("Cabecera:" + req.headers);
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/html');
@@ -32,4 +45,4 @@ app.use((req, res, next)=>{
 
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
-    });
+});

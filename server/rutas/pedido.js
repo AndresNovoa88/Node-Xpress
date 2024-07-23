@@ -13,6 +13,6 @@ module.exports = (app) => {
     .put(pedCtrl.uPedido)
     .delete(pedCtrl.dPedido);
 
-    app.route('/api/setLibro')
+    app.route('/api/setLibro') // esto es un endpoint, va cnectado con refuerzoREACT
     .post(pedCtrl.nPedido);
 }
